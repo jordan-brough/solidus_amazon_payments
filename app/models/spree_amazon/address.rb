@@ -19,7 +19,7 @@ class SpreeAmazon::Address
     end
 
     def in_test_mode?
-      Spree::Gateway::Amazon.first.preferred_test_mode
+      SpreeAmazon::Config.payment_method.call(Spree::Config.currency).preferred_test_mode
     end
 
     def attributes_from_response(response)
