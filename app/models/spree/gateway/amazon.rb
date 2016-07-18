@@ -9,6 +9,10 @@
 ##
 module Spree
   class Gateway::Amazon < Gateway
+    preference :client_id, :string
+    preference :merchant_id, :string
+    preference :aws_access_key_id, :string
+    preference :aws_secret_access_key, :string
 
     has_one :provider
 
@@ -38,7 +42,7 @@ module Spree
       end
       order = Spree::Order.find_by(:number => gateway_options[:order_id].split("-")[0])
       load_amazon_mws(order.amazon_order_reference_id)
-      response = @mws.authorize(gateway_options[:order_id], amount / 100.0, Spree::Config.currency)
+      response = @mws.authorize(gateway_options[:order_id], amount / 100.0, order.currency)
       if response["ErrorResponse"]
         return ActiveMerchant::Billing::Response.new(false, response["ErrorResponse"]["Error"]["Message"], response)
       end
@@ -56,7 +60,7 @@ module Spree
       load_amazon_mws(order.amazon_order_reference_id)
 
       authorization_id = order.amazon_transaction.authorization_id
-      response = @mws.capture(authorization_id, "C#{Time.now.to_i}", amount / 100.00, Spree::Config.currency)
+      response = @mws.capture(authorization_id, "C#{Time.now.to_i}", amount / 100.00, order.currency)
       t = order.amazon_transaction
       t.capture_id = response.fetch("CaptureResponse", {}).fetch("CaptureResult", {}).fetch("CaptureDetails", {}).fetch("AmazonCaptureId", nil)
       t.save!
@@ -90,7 +94,7 @@ module Spree
       if capture_id.nil?
         response = @mws.cancel(order.amazon_transaction.order_reference)
       else
-        response = @mws.refund(capture_id, gateway_options[:order_id], order.total, Spree::Config.currency)
+        response = @mws.refund(capture_id, gateway_options[:order_id], order.total, order.currency)
       end
 
       return ActiveMerchant::Billing::Response.new(true, "Success", response)
@@ -99,7 +103,7 @@ module Spree
     private
 
     def load_amazon_mws(reference)
-      @mws ||= AmazonMws.new(reference, self.preferred_test_mode)
+      @mws ||= AmazonMws.new(reference, gateway: self)
     end
   end
 end

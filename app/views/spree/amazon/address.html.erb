@@ -11,17 +11,21 @@
 
   <script type='text/javascript'>
     window.onAmazonLoginReady = function() {
+      // TODO: How do we determine the correct gateway here?
       amazon.Login.setClientId('<%= SpreeAmazon::Config[:client_id] %>');
       $('#continue_to_delivery').click();
     };
   </script>
-  <script type='text/javascript'
+
+<!-- TODO: How do we determine the correct gateway here? -->
+<script type='text/javascript'
     src='https://static-na.payments-amazon.com/OffAmazonPayments/us/<%= Spree::Gateway::Amazon.first.preferred_test_mode ? 'sandbox/' : '' %>js/Widgets.js?sellerId=<%= SpreeAmazon::Config[:merchant_id] %>'>
   </script>
 
   <script>
     $( document ).ready(function() {
       new OffAmazonPayments.Widgets.AddressBook({
+        // TODO: How do we determine the correct gateway here?
         sellerId: '<%= SpreeAmazon::Config[:merchant_id] %>',
         agreementType: 'orderreference',
         onOrderReferenceCreate: function(orderReference) {

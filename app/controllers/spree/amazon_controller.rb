@@ -34,7 +34,7 @@ class Spree::AmazonController < Spree::StoreController
   end
 
   def delivery
-    address = SpreeAmazon::Address.find(current_order.amazon_order_reference_id)
+    address = SpreeAmazon::Address.find(current_order.amazon_order_reference_id, gateway: SpreeAmazon::Config.payment_method.call(current_order.currency))
     current_order.state = "address"
 
     if address

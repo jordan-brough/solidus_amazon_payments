@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# TODO: Remove this?  There is nothing left that is editable.
 describe Spree::Admin::AmazonController do
   let(:user) { create(:user) }
 
@@ -9,22 +10,6 @@ describe Spree::Admin::AmazonController do
   end
 
   describe 'PUT #update' do
-    it "updates the amazon payments configuration" do
-      settings = {
-        utf8: '✓',
-        client_id: 'CLIENT_ID',
-        merchant_id: 'MERCHANT_ID',
-        aws_access_key_id: 'AWS_KEY_ID',
-        aws_secret_access_key: 'AWS_SECRET_KEY_ID'
-      }
-
-      spree_put :update, settings
-
-      expect(SpreeAmazon::Config[:client_id]).to eq('CLIENT_ID')
-      expect(SpreeAmazon::Config[:merchant_id]).to eq('MERCHANT_ID')
-      expect(SpreeAmazon::Config[:aws_access_key_id]).to eq('AWS_KEY_ID')
-      expect(SpreeAmazon::Config[:aws_secret_access_key]).to eq('AWS_SECRET_KEY_ID')
-    end
 
     it "sets a flash message" do
       settings = {}

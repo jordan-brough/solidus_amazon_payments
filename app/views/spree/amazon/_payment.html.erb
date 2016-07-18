@@ -7,6 +7,7 @@
 <%# @license     http://opensource.org/licenses/Apache-2.0  Apache License, Version 2.0 %>
 <%# %>
 new OffAmazonPayments.Widgets.Wallet({
+  <%# TODO: How do we determine the correct gateway here? %>
   sellerId: '<%= SpreeAmazon::Config[:merchant_id] %>',
   onPaymentSelect: function(orderReference) {
     jQuery.post(

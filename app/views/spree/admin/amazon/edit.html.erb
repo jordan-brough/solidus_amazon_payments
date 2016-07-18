@@ -15,25 +15,8 @@
 <%= form_tag admin_amazon_path, :method => :put do %>
   <div id="preferences" data-hook>
     <fieldset class="general no-border-top">
-      <div class="field">
-        <%= label_tag "Amazon Client Id" %>
-        <%= text_field_tag :client_id, SpreeAmazon::Config[:client_id], class: 'fullwidth' %>
-      </div>
 
-      <div class="field">
-        <%= label_tag "Amazon Seller Id" %>
-        <%= text_field_tag :merchant_id, SpreeAmazon::Config[:merchant_id], class: 'fullwidth' %>
-      </div>
-
-      <div class="field">
-        <%= label_tag "Amazon MWS Access Key" %>
-        <%= text_field_tag :aws_access_key_id, SpreeAmazon::Config[:aws_access_key_id], class: 'fullwidth' %>
-      </div>
-
-      <div class="field">
-        <%= label_tag "Amazon MWS Secret Key" %>
-        <%= text_field_tag :aws_secret_access_key, SpreeAmazon::Config[:aws_secret_access_key], class: 'fullwidth' %>
-      </div>
+      <%# TODO: Remove this entire admin area?  There is nothing left that is editable. %>
 
       <div class="field">
         <%= label_tag "Amazon Callback Url" %>

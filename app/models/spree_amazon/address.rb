@@ -1,7 +1,7 @@
 class SpreeAmazon::Address
   class << self
-    def find(order_reference)
-      response = mws(order_reference).fetch_order_data
+    def find(order_reference, gateway:)
+      response = mws(order_reference, gateway: gateway).fetch_order_data
       from_response(response)
     end
 
@@ -14,12 +14,8 @@ class SpreeAmazon::Address
 
     private
 
-    def mws(order_reference)
-      AmazonMws.new(order_reference, in_test_mode?)
-    end
-
-    def in_test_mode?
-      SpreeAmazon::Config.payment_method.call(Spree::Config.currency).preferred_test_mode
+    def mws(order_reference, gateway:)
+      AmazonMws.new(order_reference, gateway: gateway)
     end
 
     def attributes_from_response(response)
